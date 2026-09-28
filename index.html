@@ -1,36 +1,34 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Company Hierarchy Levels</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#f4f6fb;--fg:#1c2233;--card:#fff;--muted:#6b7385;--accent:#3b5bdb;--ceo:#e8590c;--line:#b8c0d4;--bd:#dde2ee}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151f;--fg:#e8ebf5;--card:#1c2130;--muted:#98a1b8;--accent:#748ffc;--ceo:#ff922b;--line:#4a5370;--bd:#2c3348}}
-:root[data-theme="dark"]{--bg:#12151f;--fg:#e8ebf5;--card:#1c2130;--muted:#98a1b8;--accent:#748ffc;--ceo:#ff922b;--line:#4a5370;--bd:#2c3348}
+--bg:#fff;--fg:#000;--muted:#555;--line:#000;--bd:#000}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+input,button{font-family:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Courier New",Courier,monospace;line-height:1.5}
 .wrap{max-width:900px;margin:0 auto;padding:20px 16px 40px}
 h1{font-size:1.5rem;margin:0}
 .sub{color:var(--muted);margin:2px 0 18px;font-size:.9rem}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:16px}
+.card{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:16px;margin-bottom:16px}
 h2{font-size:1rem;margin:0 0 10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:700px){.grid{grid-template-columns:1fr}}
-input{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font-size:1rem}
+input{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:4px;background:var(--bg);color:var(--fg);font-size:1rem}
 label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px}
 .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-button{padding:9px 14px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-size:.95rem;cursor:pointer}
-button.alt{background:transparent;color:var(--fg);border:1px solid var(--bd)}
-.msg{margin-top:10px;font-size:.88rem;min-height:1.2em}
-.err{color:#e03131}.ok{color:#2f9e44}
+button{padding:9px 14px;border:1px solid var(--bd);border-radius:4px;background:var(--fg);color:var(--bg);font-size:.95rem;cursor:pointer}
+button.alt{background:var(--bg);color:var(--fg)}
+.msg{margin:-6px 0 16px;font-size:.88rem;min-height:1.2em}
 .stat{display:flex;align-items:baseline;gap:10px}
-.big{font-size:2.4rem;font-weight:700;color:var(--accent)}
+.big{font-size:2.4rem;font-weight:700}
 .lvl{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--bd);align-items:flex-start}
 .lvl b{min-width:72px}
-.chip{display:inline-block;padding:2px 10px;margin:2px 4px 2px 0;border-radius:99px;background:var(--bg);border:1px solid var(--bd);font-size:.85rem}
+.chip{display:inline-block;padding:2px 10px;margin:2px 4px 2px 0;border-radius:99px;border:1px solid var(--bd);font-size:.85rem}
 .tree{overflow-x:auto}
 .empty{color:var(--muted)}
 </style>
@@ -40,24 +38,13 @@ button.alt{background:transparent;color:var(--fg);border:1px solid var(--bd)}
   <h1>Company Hierarchy Levels</h1>
   <div class="sub">B BETINA ROLAND</div>
 
-  <div class="grid">
-    <div class="card">
-      <h2>Option 1: Enter all boss values</h2>
-      <label for="line">Boss of each employee, separated by spaces (-1 for the CEO)</label>
-      <input id="line" placeholder="-1 0 0 1 1 2">
-      <div class="row">
-        <button id="build">Build hierarchy</button>
-        <button class="alt" id="sample">Load sample</button>
-      </div>
-    </div>
-    <div class="card">
-      <h2>Option 2: Add employees one by one</h2>
-      <label id="addlabel" for="one"></label>
-      <input id="one" type="number" min="0">
-      <div class="row">
-        <button id="add">Add employee</button>
-        <button class="alt" id="clear">Clear all</button>
-      </div>
+  <div class="card">
+    <h2>Enter all boss values</h2>
+    <label for="line">Boss of each employee, separated by spaces (-1 for the CEO)</label>
+    <input id="line" placeholder="-1 0 0 1 1 2">
+    <div class="row">
+      <button id="build">Build hierarchy</button>
+      <button class="alt" id="sample">Load sample</button>
     </div>
   </div>
   <div class="msg" id="msg"></div>
@@ -83,7 +70,7 @@ class Queue{constructor(){this.a=[];this.f=0}push(x){this.a.push(x)}pop(){return
 let boss=[];
 const $=id=>document.getElementById(id);
 
-function say(t,ok){const m=$('msg');m.textContent=t;m.className='msg '+(ok?'ok':'err')}
+function say(t){$('msg').textContent=t}
 
 function validate(b){
   if(b.length<1||b.length>1000)return 'Enter between 1 and 1000 values.';
@@ -97,9 +84,6 @@ function validate(b){
 
 function render(){
   const n=boss.length;
-  $('addlabel').textContent=n===0?'Employee 0 will be the CEO (boss = -1)':'Boss of employee '+n+' (0 to '+(n-1)+')';
-  $('one').style.display=n===0?'none':'block';
-  $('add').textContent=n===0?'Add CEO':'Add employee';
   if(n===0){$('total').textContent='-';$('count').textContent='No data yet';
     $('list').className='empty';$('list').textContent='Build a hierarchy to see the levels.';
     $('tree').className='tree empty';$('tree').textContent='Build a hierarchy to see the tree.';return}
@@ -125,12 +109,12 @@ function render(){
   levels.forEach((l,i)=>l.forEach(v=>depth[v]=i));
   const gx=64,gy=76,pad=36;
   const W=Math.max(leaf*gx+pad*2,300),H=levels.length*gy+pad;
-  let s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" font-family="system-ui,sans-serif">';
+  let s='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" font-family="Courier New,Courier,monospace">';
   for(let v=1;v<n;v++){const p=boss[v];
     s+='<line x1="'+(pad+xs[p]*gx)+'" y1="'+(pad/2+depth[p]*gy+20)+'" x2="'+(pad+xs[v]*gx)+'" y2="'+(pad/2+depth[v]*gy)+'" stroke="var(--line)" stroke-width="2"/>'}
   for(let v=0;v<n;v++){const x=pad+xs[v]*gx,y=pad/2+depth[v]*gy+2;
-    s+='<circle cx="'+x+'" cy="'+y+'" r="18" fill="'+(v===0?'var(--ceo)':'var(--accent)')+'"/>'+
-       '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="13" font-weight="600" fill="#fff">'+v+'</text>'}
+    s+='<circle cx="'+x+'" cy="'+y+'" r="18" fill="'+(v===0?'var(--fg)':'var(--bg)')+'" stroke="var(--fg)" stroke-width="2"/>'+
+       '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="13" font-weight="600" fill="'+(v===0?'var(--bg)':'var(--fg)')+'">'+v+'</text>'}
   $('tree').className='tree';$('tree').innerHTML=s+'</svg>';
 }
 
@@ -139,20 +123,12 @@ $('build').onclick=()=>{
   if(!/^-?\d+(\s+-?\d+)*$/.test(t)){say('Invalid input. Use only whole numbers separated by spaces.');return}
   const b=t.split(/\s+/).map(Number),e=validate(b);
   if(e){say(e);return}
-  boss=b;render();say('Hierarchy built with '+b.length+' employees.',true);
+  boss=b;render();say('Hierarchy built with '+b.length+' employees.');
 };
 $('sample').onclick=()=>{$('line').value='-1 0 0 1 1 2';$('build').click()};
-$('add').onclick=()=>{
-  if(boss.length===0){boss=[-1];render();say('Employee 0 added as the CEO.',true);return}
-  const v=$('one').value;const b=Number(v);
-  if(v===''||!Number.isInteger(b)||b<0||b>=boss.length){say('Boss must be a whole number from 0 to '+(boss.length-1)+'.');return}
-  if(boss.length>=1000){say('Maximum is 1000 employees.');return}
-  boss.push(b);$('one').value='';render();say('Employee '+(boss.length-1)+' added under employee '+b+'.',true);
-};
-$('one').addEventListener('keydown',e=>{if(e.key==='Enter')$('add').click()});
 $('line').addEventListener('keydown',e=>{if(e.key==='Enter')$('build').click()});
-$('clear').onclick=()=>{boss=[];$('line').value='';render();say('All data cleared.',true)};
 render();
 </script>
 </body>
 </html>
+```
